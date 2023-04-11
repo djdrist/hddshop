@@ -17,6 +17,9 @@ import {
   StepLabel,
   Button,
   Typography,
+  CircularProgress,
+  Backdrop,
+  Snackbar,
 } from '@mui/material';
 
 const Order = () => {
@@ -38,6 +41,7 @@ const Order = () => {
     payment: 'CASH ON DELIVERY',
   });
   const [orderId, setOrderId] = useState('');
+  const [loader, setLoader] = useState(false);
 
   const steps = ['Address', 'Payment', 'Summary'];
 
@@ -89,6 +93,7 @@ const Order = () => {
           quantity: product.quantity,
         })),
       };
+      setLoader(true);
       let response = await fetch(`${API_URL}/orders`, {
         method: 'POST',
         headers: {
@@ -96,6 +101,13 @@ const Order = () => {
         },
         body: JSON.stringify(orderData),
       });
+      if (response.status !== 201) {
+        response = await response.json();
+        alert(response.message);
+        setLoader(false);
+        return;
+      }
+      setLoader(false);
       response = await response.json();
       setOrderId(response.id);
     }
@@ -109,6 +121,19 @@ const Order = () => {
 
   return (
     <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+      {loader && (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Backdrop
+            sx={{
+              color: '#fff',
+              zIndex: (theme) => theme.zIndex.drawer + 1,
+            }}
+            open={loader}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        </Box>
+      )}
       <Paper
         variant="outlined"
         sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}

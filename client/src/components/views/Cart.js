@@ -2,8 +2,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   getCart,
-  editCartProduct,
-  deleteCartProduct,
+  editCartProductRequest,
+  deleteCartProductRequest,
 } from '../../redux/cartRedux';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -31,9 +31,9 @@ const Cart = ({ openCart, setOpenCart }) => {
   const handleEditProduct = (product, quantity) => {
     product = { ...product, quantity: product.quantity + quantity };
     if (product.quantity === 0) {
-      dispatch(deleteCartProduct({ id: product.id }));
+      dispatch(deleteCartProductRequest({ id: product.id }));
     } else {
-      dispatch(editCartProduct(product));
+      dispatch(editCartProductRequest(product));
     }
   };
 
@@ -78,7 +78,9 @@ const Cart = ({ openCart, setOpenCart }) => {
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <Button
                 variant="outlined"
-                onClick={() => dispatch(deleteCartProduct({ id: product.id }))}
+                onClick={() =>
+                  dispatch(deleteCartProductRequest({ id: product.id }))
+                }
               >
                 <DeleteForeverIcon />
                 REMOVE
