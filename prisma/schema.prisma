@@ -19,7 +19,9 @@ model Product {
   color       String
   price       Float
 
-  orders Order[]
+  orders     Order[]
+  quantities Quantities[]
+
 }
 
 model Order {
@@ -28,9 +30,25 @@ model Order {
   address   String
   city      String
   zipcode   String
+  country   String
   phone     String
   email     String
+  payment   String 
   total     Float
-  products  Product[] 
+
+  products     Product[]
+  quantities   Quantities[]
+
+  createdAt DateTime @default(now())
+}
+
+model Quantities {
+  id        String @id @default(uuid())
+  quantity  Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  order     Order @relation(fields: [orderId], references: [id])
+  orderId   String
+
   createdAt DateTime @default(now())
 }

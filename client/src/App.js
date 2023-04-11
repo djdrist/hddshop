@@ -10,6 +10,8 @@ import { Container } from '@mui/material';
 import Header from './components/layout/Header/Header';
 import Footer from './components/layout/Footer/Footer';
 import Home from './components/views/Home';
+import Product from './components/views/Product';
+import Order from './components/views/Order/Order';
 
 import colors from './styles/colors.scss';
 
@@ -38,9 +40,11 @@ const App = () => {
     <>
       <ThemeProvider theme={darkTheme}>
         <Header />
-        <Container>
+        <Container sx={{ marginY: '100px' }}>
           <Routes>
             <Route exact path="/" Component={Home} />
+            <Route exact path="/product/:id" Component={Product} />
+            <Route exact path="/order" Component={Order} />
           </Routes>
         </Container>
         <Footer />
